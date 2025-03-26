@@ -87,6 +87,3 @@ export const forgotPasswordApi = async (email) => {
   }
   return response;
 };
-
-export const resetPasswordApi = async (password, token) => {
-  
