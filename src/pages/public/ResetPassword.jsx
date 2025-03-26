@@ -1,77 +1,66 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 
-function ResetPassword() {
+const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setMessage('');
-    setLoading(true);
 
     if (password !== confirmPassword) {
-      setMessage('Passwords do not match.');
-      setLoading(false);
+      toast.error('Passwords do not match!', { position: 'top-center' });
       return;
     }
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setMessage('Password reset successful!');
-      // simulate success, redirect to login.
-      setTimeout(() => {
-        window.location.href = '/login';
-      }, 1500);
-    } catch (error) {
-      setMessage('Password reset failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    // Simulate API request for password reset
+    toast.success('Password reset successful!', { position: 'top-center' });
+
+    // Clear input fields
+    setPassword('');
+    setConfirmPassword('');
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <div className="flex justify-center mb-6">
-          <img
-            src="https://deepseek.com/assets/images/logo.svg"
-            alt="DeepSeek Logo"
-            className="h-8"
-          />
-        </div>
-        <h2 className="text-2xl font-semibold mb-6 text-center text-[#1E293B]">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 p-4">
+      <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-sm">
+        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
           Reset Password
         </h2>
-        {message && <p className="text-center mb-4">{message}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+        <p className="text-sm text-gray-600 text-center mb-4">
+          Enter your new password below.
+        </p>
+
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          {/* New Password Field */}
+          <div className="relative">
             <label
-              className="block text-gray-700 text-sm font-medium mb-2"
+              className="block text-sm font-medium text-gray-700"
               htmlFor="password"
             >
-              Password
+              New Password
             </label>
             <input
-              className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2 pr-10"
               id="password"
               type="password"
-              placeholder="New password"
+              placeholder="Enter new password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-          <div className="mb-6">
+
+          {/* Confirm Password Field */}
+          <div className="relative">
             <label
-              className="block text-gray-700 text-sm font-medium mb-2"
+              className="block text-sm font-medium text-gray-700"
               htmlFor="confirmPassword"
             >
               Confirm Password
             </label>
             <input
-              className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2 pr-10"
               id="confirmPassword"
               type="password"
               placeholder="Confirm new password"
@@ -80,21 +69,32 @@ function ResetPassword() {
               required
             />
           </div>
-          <div className="flex items-center justify-center">
+
+          {/* Reset Password Button */}
+          <div>
             <button
-              className={`bg-[#1D4ED8] hover:bg-[#1E40AF] text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline ${
-                loading ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="submit"
-              disabled={loading}
             >
-              {loading ? 'Resetting...' : 'Reset Password'}
+              Reset Password
             </button>
           </div>
         </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            Back to{' '}
+            <a
+              href="/login"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              Log in
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default ResetPassword;
